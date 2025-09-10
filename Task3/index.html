@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Real-Time Notes</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; padding: 30px; }
+    textarea { width: 80%; height: 300px; font-size: 16px; }
+    h1 { color: #333; }
+  </style>
+</head>
+<body>
+  <h1>Collaborative Notes</h1>
+  <textarea id="noteArea" placeholder="Start typing..."></textarea>
+
+  <script>
+    const socket = io();
+    const noteArea = document.getElementById("noteArea");
+
+    // Send text changes
+    noteArea.addEventListener("input", () => {
+      socket.send(noteArea.value);
+    });
+
+    // Receive updates from server
+    socket.on("message", (data) => {
+      noteArea.value = data;
+    });
+  </script>
+</body>
+</html>
